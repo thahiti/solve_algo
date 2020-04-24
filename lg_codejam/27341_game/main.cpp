@@ -32,21 +32,30 @@ void solve(int a, int b, int lv){
 	}
 }
 
+//count for each case, do not care actual choices
 int pre_solve(int a, int b){
+	//base case1, wrong case can't go to 1,1
 	if(a==0 || b==0)
 		return 300001;
+
+	//base case2, reach to answer, no more operation needed
 	if(a==1 && b==1)
-		return 0;
+		return 1;
 
+	//fix big number, small number
 	int big = max(a, b);
-	int lit = min(a, b);
+	int small = min(a, b);
 
-	if(lit == 1)
+	//if small is 1, it takes big-1 operation
+	if(small == 1)
 		return big-1;
 
-	int div = big/lit;
-	int mod = big%lit;
-	return div + pre_solve(mod, lit);
+	//divide & modular can reduce calculation
+	//ex) case(19,3) -> 16,3 -> 13,3 -> 10,3 -> 7,3 -> 4,3 -> 1,3
+	//19,3 = 6*3+1 -> 6 operation + case(1,3)
+	int div = big/small;
+	int mod = big%small;
+	return div + pre_solve(mod, small);
 }
 
 int main(){
@@ -80,4 +89,5 @@ int main(){
     }
 	return 0;
 }
+
 
